@@ -13,7 +13,7 @@ def test_page_urls(client):
         data=dict(email="user@example.com", password="Password1"),
     )
     assert response.status_code == 200
-    response = client.get(url_for("main.member_page"), follow_redirects=True)
+    response = client.get(url_for("main.user_page"), follow_redirects=True)
     assert response.status_code == 200
 
     # Edit User Profile page
@@ -24,7 +24,7 @@ def test_page_urls(client):
         follow_redirects=True,
         data=dict(first_name="User", last_name="User"),
     )
-    response = client.get(url_for("main.member_page"), follow_redirects=True)
+    response = client.get(url_for("main.user_page"), follow_redirects=True)
     assert response.status_code == 200
 
     # Logout

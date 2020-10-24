@@ -15,9 +15,9 @@ def home_page():
 
 
 # The User page is accessible to authenticated users (users that have logged in)
-@main_blueprint.route("/member")
+@main_blueprint.route("/user")
 @login_required  # Limits access to authenticated users
-def member_page():
+def user_page():
     return render_template("main/user_page.html")
 
 
