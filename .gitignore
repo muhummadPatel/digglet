@@ -8,9 +8,12 @@ instance/
 .pytest_cache/
 .coverage
 htmlcov/
+.cache
 
 dist/
 build/
 *.egg-info/
 
 local_settings.py
+
+*.sqlite

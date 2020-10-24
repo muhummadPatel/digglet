@@ -49,6 +49,7 @@ def find_or_create_role(name, label):
     if not role:
         role = Role(name=name, label=label)
         db.session.add(role)
+
     return role
 
 
@@ -64,7 +65,9 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
             active=True,
             email_confirmed_at=datetime.datetime.utcnow(),
         )
+
         if role:
             user.roles.append(role)
         db.session.add(user)
+
     return user

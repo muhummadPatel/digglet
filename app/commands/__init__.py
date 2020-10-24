@@ -2,3 +2,7 @@
 # a Python package so it can be accessed using the 'import' statement.
 
 from .init_db import InitDbCommand
+
+__all__ = [
+    "InitDbCommand",
+]

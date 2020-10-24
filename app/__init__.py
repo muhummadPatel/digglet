@@ -1,14 +1,10 @@
 # __init__.py is a special Python file that allows a directory to become
 # a Python package so it can be accessed using the 'import' statement.
 
-from datetime import datetime
-import os
-
 from flask import Flask
-from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 from flask_user import UserManager
 from flask_wtf.csrf import CSRFProtect
 
@@ -18,6 +14,7 @@ csrf_protect = CSRFProtect()
 db = SQLAlchemy()
 mail = Mail()
 migrate = Migrate()
+
 
 # Initialize Flask Application
 def create_app(extra_config_settings={}):
@@ -62,7 +59,6 @@ def create_app(extra_config_settings={}):
 
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User
-    from .views.main_views import user_profile_page
 
     # Setup Flask-User
     user_manager = UserManager(app, db, User)
