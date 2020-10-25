@@ -22,7 +22,7 @@ the_app = create_app(
 the_app.app_context().push()
 
 # Create and populate roles and users tables
-init_db()
+init_db(is_test_db=True)
 
 
 @pytest.fixture(scope="session")

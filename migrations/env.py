@@ -78,6 +78,8 @@ def run_migrations_online():
         connection=connection,
         target_metadata=target_metadata,
         process_revision_directives=process_revision_directives,
+        # https://stackoverflow.com/questions/30378233/sqlite-lack-of-alter-support-alembic-migration-failing-because-of-this-solutio
+        render_as_batch=True,
         **current_app.extensions["migrate"].configure_args
     )
 

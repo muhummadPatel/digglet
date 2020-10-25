@@ -6,7 +6,7 @@ from flask import current_app
 from flask_script import Command
 
 from app import db
-from app.models.user_models import User, Role
+from app.models.user import User, Role
 
 
 class InitDbCommand(Command):
@@ -17,19 +17,16 @@ class InitDbCommand(Command):
         print("Database has been initialized.")
 
 
-def init_db():
+def init_db(is_test_db=False):
     """ Initialize the database."""
-    db.drop_all()
-    db.create_all()
+    if is_test_db:
+        db.drop_all()
+        db.create_all()
     create_users()
 
 
 def create_users():
     """ Create users """
-
-    # Create all tables
-    db.create_all()
-
     # Adding roles
     admin_role = find_or_create_role("admin", u"Admin")
 
@@ -37,7 +34,7 @@ def create_users():
     find_or_create_user(
         u"Admin", u"Example", u"admin@example.com", "Password1", admin_role
     )
-    find_or_create_user(u"Member", u"Example", u"member@example.com", "Password1")
+    find_or_create_user(u"Student", u"Example", u"member@example.com", "Password1")
 
     # Save to DB
     db.session.commit()

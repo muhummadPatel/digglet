@@ -1,9 +1,10 @@
 from flask import Blueprint, redirect, render_template
 from flask import request, url_for
 from flask_user import current_user, login_required, roles_required
-
+from datetime import datetime
 from app import db
-from app.models.user_models import UserProfileForm
+from app.models import UserProfileForm, Ticket, TicketStatus, TicketForm
+from flask.helpers import flash
 
 main_blueprint = Blueprint("main", __name__, template_folder="templates")
 
@@ -15,10 +16,43 @@ def home_page():
 
 
 # The User page is accessible to authenticated users (users that have logged in)
-@main_blueprint.route("/user")
+@main_blueprint.route("/user", methods=["GET", "POST"])
 @login_required  # Limits access to authenticated users
 def user_page():
-    return render_template("main/user_page.html")
+    ticket = Ticket(
+        requester_id=current_user.id,
+        status=TicketStatus.OPEN,
+        create_date=datetime.now(),
+    )
+    form = TicketForm(request.form, obj=ticket)
+
+    print(current_user)
+    print(current_user.__dict__)
+    print(current_user.id)
+    if form.validate_on_submit():
+        # Copy form fields to user_profile fields
+        form.populate_obj(ticket)
+
+        # Save ticket
+        db.session.add(ticket)
+        db.session.commit()
+
+        # reset form and      flash success
+
+        flash("Successfully created ticket", "success")
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(
+                    "Error in the %s field - %s"
+                    % (getattr(form, field).label.text, error),
+                    "error",
+                )
+
+    # Pull all tickets requested by this user for display
+    tickets = Ticket.query.filter(Ticket.requester_id == current_user.id).all()
+
+    return render_template("main/user_page.html", form=form, tickets=tickets)
 
 
 # The Admin page is accessible to users with the 'admin' role
@@ -35,7 +69,7 @@ def user_profile_page():
     form = UserProfileForm(request.form, obj=current_user)
 
     # Process valid POST
-    if request.method == "POST" and form.validate():
+    if form.validate_on_submit():
         # Copy form fields to user_profile fields
         form.populate_obj(current_user)
 
