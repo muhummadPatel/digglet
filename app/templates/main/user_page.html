@@ -33,7 +33,7 @@
     <h2>Your tickets</h2>
     <ul>
         {% for ticket in tickets %}
-            <li>{{ ticket }}</li>
+            <li><a href="{{ url_for('main.ticket_page', ticket_id=ticket.id) }}">link</a> - {{ ticket }}</li>
         {% endfor %}
     </ul>
 </form>

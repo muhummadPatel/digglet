@@ -25,6 +25,12 @@ class User(db.Model, UserMixin):
     roles = db.relationship(
         "Role", secondary="users_roles", backref=db.backref("users", lazy="dynamic")
     )
+    requested_tickets = db.relationship(
+        "Ticket", back_populates="requester", foreign_keys="Ticket.requester_id"
+    )
+    assigned_tickets = db.relationship(
+        "Ticket", back_populates="assignee", foreign_keys="Ticket.assignee_id"
+    )
 
 
 # Define the User profile form

@@ -1,0 +1,16 @@
+{% extends "main/main_base.html" %}  {# main/main_base.html extends layout.html #}
+
+{% block content %}
+    <h2>Tickets page</h2>
+    <br/>
+    <h3>{{ ticket.title }}</h3>
+    <br/>
+    <p>{{ ticket.description }}</p>
+    <br/>
+    <ul>
+        <li>status - {{ ticket.status }}</li>
+        <li>create date - {{ ticket.create_date }}</li>
+        <li>requester - {{ ticket.requester.first_name }}</li>
+        <li>assignee - {{ ticket.assignee.first_name | default("None", true) }}</li>
+    </ul>
+{% endblock %}

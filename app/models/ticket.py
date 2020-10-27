@@ -54,8 +54,16 @@ class Ticket(db.Model):
     )
     create_date = db.Column(db.DateTime(), nullable=False, index=True)
 
+    # Relationships
+    requester = db.relationship(
+        "User", back_populates="requested_tickets", foreign_keys="Ticket.requester_id"
+    )
+    assignee = db.relationship(
+        "User", back_populates="assigned_tickets", foreign_keys="Ticket.assignee_id"
+    )
+
     def __str__(self):
-        return f"{self.title} - {self.description} - {self.status} - {self.create_date}"
+        return f"{self.title} - {self.status} - {self.create_date}"
 
 
 # Define the Ticket form

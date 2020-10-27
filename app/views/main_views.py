@@ -50,7 +50,7 @@ def user_page():
                 )
 
     # Pull all tickets requested by this user for display
-    tickets = Ticket.query.filter(Ticket.requester_id == current_user.id).all()
+    tickets = current_user.requested_tickets
 
     return render_template("main/user_page.html", form=form, tickets=tickets)
 
@@ -81,3 +81,10 @@ def user_profile_page():
 
     # Process GET or invalid POST
     return render_template("main/user_profile_page.html", form=form)
+
+
+@main_blueprint.route("/ticket/<int:ticket_id>", methods=["GET"])
+@login_required
+def ticket_page(ticket_id):
+    ticket = Ticket.query.filter(Ticket.id == ticket_id).one()
+    return render_template("main/ticket_page.html", ticket=ticket)
